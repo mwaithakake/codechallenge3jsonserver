@@ -1,10 +1,55 @@
-const jsonServer = require("json-server"); // importing json-server library
-const server = jsonServer.create();
-const router = jsonServer.router("db.json");
-const middlewares = jsonServer.defaults();
-const port = process.env.PORT || 8080; //  chose port from here like 8080, 3001
+       
+        document.addEventListener('DOMContentLoaded' , () => {
+            getFilm()
+          ticketsAvailable()
 
-server.use(middlewares);
-server.use(router);
+        })
+     
+        function getFilm(){
+            const filmList = document.getElementById('films')
+            fetch ("http://localhost:3000/films")
+            .then (response => response.json() )
+            .then ((collection) => {
+                collection.forEach (film => {
+                    const list = document.createElement ('li')
+                    list.innerText = film.title;
+                    list.addEventListener('click'  , () => {
+                        getMovieDetails(film)
+                    })
+                
+                filmList.appendChild(list);
+                console.log (film.title)
+                
+                })
+                    
+                });
 
-server.listen(port);
+            } 
+            
+           function getMovieDetails(film) {
+                const image = document.getElementById('poster');
+                image.src = film.poster
+
+                const title = document.getElementById('title');
+                title.innerText = `${film.title}`
+
+                const runtime = document.getElementById ('runtime');
+                runtime.innerText = `${film.runtime}`
+
+                const showtime = document.getElementById('showtime');
+                showtime.innerText = `${film.showtime}`
+
+               const description = document.getElementById('film-info');
+               description.innerText = `${film.description}`
+
+
+                const tickets = document.getElementById('ticket-num');
+                const availableTickets = film.capacity - film.tickets_sold
+            }
+
+        function ticketsAvailable (){
+            const tickets = document.getElementById('ticket-num');
+            const availableTickets  = film.capacity - film.tickets_sold
+            return availableTickets
+        }
+        
